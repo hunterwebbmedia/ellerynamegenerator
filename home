@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blank White Webpage</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden; /* Prevents scrolling */
+        }
+        .fade {
+            opacity: 0;
+            transition: opacity 3s ease;
+        }
+        .visible {
+            opacity: 1;
+        }
+        .hidden {
+            display: none;
+        }
+        .message, .button, .another-button, .pet-name, .quote, .shakespeare-time {
+            font-size: 24px;
+            text-align: center;
+        }
+        .pet-name, .quote, .shakespeare-time {
+            font-size: 48px;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+        .quote .play {
+            font-size: 24px;
+            font-weight: normal;
+            display: block;
+            margin-top: 10px;
+        }
+        .button, .another-button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px; /* Rounded corners */
+            background-color: #ff69b4; /* Pink color */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .button:hover, .another-button:hover {
+            background-color: #ff1493; /* Darker pink color on hover */
+        }
+        .another-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        .shakespeare-time {
+            color: #ff69b4; /* Pink color */
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff69b4;
+        }
+    </style>
+</head>
+<body>
+    <div id="preMessage" class="message fade">To my Ellery<br>- From Hunter :)</div>
+    <button class="button fade hidden" id="mainButton" onclick="generatePetName()">Make Ellery a Name</button>
+    <div id="petName" class="pet-name fade"></div>
+    <div id="shakespeareTime" class="shakespeare-time fade hidden">Shakespeare Time!</div>
+    <div id="quote" class="quote fade hidden"></div>
+    <button class="another-button fade hidden" id="anotherButton" onclick="generateAnotherName()">Want Another?</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var preMessage = document.getElementById("preMessage");
+            var mainButton = document.getElementById("mainButton");
+
+            // Show the pre-message
+            preMessage.classList.add("visible");
+
+            // Hide the pre-message after 3 seconds and show the main button
+            setTimeout(function() {
+                preMessage.classList.remove("visible");
+                setTimeout(function() {
+                    preMessage.classList.add("hidden");
+                    mainButton.classList.remove("hidden");
+                    mainButton.classList.add("visible");
+                }, 3000); // Wait for the pre-message to fade out
+            }, 3000); // Display pre-message for 3 seconds
+        });
+
+        function generatePetName() {
+            var words = [
+                "Goon", "Boat", "Gremlin", "Munchkin", "Alligator", 
+                "Goblin", "Wombat", "Martian", "Sunshine", "Lovely", 
+                "Smush", "Bubble", "Grasshopper", "Yogi", "Wallaby", 
+                "Shark", "Bear", "Princess", "Ellie", "Elligator", 
+                "Pool Shark", "Actress", "Actor", "Koala", "River Mouse", "Mouse",
+                "Flower", "Seal", "Candle", "Frog", "Lillypad", 
+                "Queen of The Garden of Life", "Tiger", "Pretzel", "Splendid", 
+                "Perfect", "Amazing", "Wonderful", "Outstanding", "The Best"
+            ];
+
+            var quotes = [
+                {quote: "All the world’s a stage, and all the men and women merely players.", play: "As You Like It"},
+                {quote: "To be, or not to be, that is the question.", play: "Hamlet"},
+                {quote: "A rose by any other name would smell as sweet.", play: "Romeo and Juliet"},
+                {quote: "Good night, good night! Parting is such sweet sorrow.", play: "Romeo and Juliet"},
+                {quote: "The better part of Valour, is Discretion.", play: "Henry IV, Part 1"},
+                {quote: "Some are born great, some achieve greatness, and some have greatness thrust upon them.", play: "Twelfth Night"}
+            ];
+
+            // Determine whether to show a pet name or a quote
+            if (Math.random() < 0.8) { // 80% chance to show a pet name
+                // Generate two random indices
+                var randomIndex1 = Math.floor(Math.random() * words.length);
+                var randomIndex2 = Math.floor(Math.random() * words.length);
+
+                // Ensure the two random indices are different
+                while (randomIndex1 === randomIndex2) {
+                    randomIndex2 = Math.floor(Math.random() * words.length);
+                }
+
+                // Combine the two random words
+                var petName = words[randomIndex1] + " " + words[randomIndex2];
+
+                // Display the combined pet name
+                var petNameDiv = document.getElementById("petName");
+                var quoteDiv = document.getElementById("quote");
+                var shakespeareTimeDiv = document.getElementById("shakespeareTime");
+                petNameDiv.textContent = petName;
+                petNameDiv.classList.add("visible");
+                petNameDiv.classList.remove("hidden");
+                quoteDiv.classList.remove("visible");
+                shakespeareTimeDiv.classList.remove("visible");
+
+            } else { // 20% chance to show a quote
+                // Display "Shakespeare Time!" first
+                var shakespeareTimeDiv = document.getElementById("shakespeareTime");
+                var quoteDiv = document.getElementById("quote");
+                var petNameDiv = document.getElementById("petName");
+                shakespeareTimeDiv.classList.remove("hidden");
+                shakespeareTimeDiv.classList.add("visible");
+                petNameDiv.classList.remove("visible");
+                quoteDiv.classList.remove("visible");
+
+                // Generate a random index for the quote
+                var randomQuoteIndex = Math.floor(Math.random() * quotes.length);
+                var selectedQuote = quotes[randomQuoteIndex];
+
+                // Display the quote after "Shakespeare Time!"
+                setTimeout(function() {
+                    var quote = '"' + selectedQuote.quote + '"';
+                    var play = selectedQuote.play;
+                    quoteDiv.innerHTML = `${quote}<span class="play">- ${play}</span>`;
+                    quoteDiv.classList.remove("hidden");
+                    quoteDiv.classList.add("visible");
+                    shakespeareTimeDiv.classList.remove("visible");
+
+                    // Ensure pet name div is hidden
+                    petNameDiv.classList.add("hidden");
+                }, 3000); // Display "Shakespeare Time!" for 3 seconds
+            }
+
+            // Hide the generator button
+            var mainButton = document.querySelector(".button");
+            mainButton.classList.remove("visible");
+            mainButton.classList.add("hidden");
+
+            // Show the "Want Another?" button after a delay
+            var anotherButton = document.getElementById("anotherButton");
+            anotherButton.classList.remove("hidden");
+            setTimeout(function() {
+                anotherButton.classList.add("visible");
+            }, 3000);
+        }
+
+        function generateAnotherName() {
+            // Generate a new pet name or quote without fading out
+            var petNameDiv = document.getElementById("petName");
+            var quoteDiv = document.getElementById("quote");
+            var shakespeareTimeDiv = document.getElementById("shakespeareTime");
+
+            petNameDiv.classList.remove("visible");
+            quoteDiv.classList.remove("visible");
+            shakespeareTimeDiv.classList.remove("visible");
+
+            setTimeout(function() {
+                generatePetName();
+                petNameDiv.classList.remove("hidden");
+
+                // Move "Want Another?" button closer
+                var anotherButton = document.getElementById("anotherButton");
+                anotherButton.style.marginTop = "20px";
+            }, 3000); // Wait for the current content to fade out
+        }
+    </script>
+</body>
+</html>
